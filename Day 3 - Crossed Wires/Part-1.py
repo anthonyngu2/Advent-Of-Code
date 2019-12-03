@@ -21,29 +21,51 @@ for x in range (0,len(wire_2_route),1):
     
 #determined route of wire from origin
 def plot(route):
-    final_cords=[]
     origin = [0,0]
+    final_cords = []
     final_cords.append(origin)
     for x in range(1,len(route)+1,1):
-        print(route[x-1])
+        
         if route[x-1][0] == 'U':
-            print('going up')
-            final_cords[x][0] = final_cords[x-1][0]
-            final_cords[x][1] = final_cords[x-1][1] + route[x-1][1] #determine new y cord
+            old_x_cord = final_cords[x-1][0]
+            new_y_cord = final_cords[x-1][1] + route[x-1][1] #determine new y cord
+            new_point = [old_x_cord,new_y_cord]
+            final_cords.append(new_point)
+
         if route[x-1][0] == 'D':
-            print('going down')
-            final_cords[x][0] = final_cords[x-1][0]
-            final_cords[x][1] = final_cords[x-1][1] - route[x-1][1] #determine new y cord
+            old_x_cord_down  = final_cords[x-1][0]
+            new_y_cord = final_cords[x-1][1] - route[x-1][1] #determine new y cord
+            new_point = [old_x_cord,new_y_cord]
+            final_cords.append(new_point)
+
         if route[x-1][0] == 'R':
-            print('going right')
-            final_cords[x][0] = final_cords[x-1][0] +  route[x-1][1] #determine new x cord
-            final_cords[x][1] = final_cords[x-1][1] 
+            new_x_cord = final_cords[x-1][0] +  route[x-1][1] #determine new x cord
+            old_y_cord = final_cords[x-1][1]
+            new_point = [new_x_cord, old_y_cord]
+            final_cords.append(new_point)
+
         if route[x-1][0] == 'L':
-            print('going left')
-            final_cords[x][0] = final_cord[x-1][0] -  route[x-1][1] #determine new x cord
-            final_cords[x][1] = final_cords[x-1][1] 
+            new_x_cord = final_cords[x-1][0] -  route[x-1][1] #determine new x cord
+            old_y_cord =  final_cords[x-1][1]
+            new_point = [new_x_cord,old_y_cord]
+            final_cords.append(new_point)
+            
+    return (final_cords)
+
         
 
-plot(route_1_cords)
+route_1 = plot(route_1_cords)
+route_2 = plot(route_2_cords)
+
+intersections = []
+for x in range(0,len(route_1),1):
+    for y in range(0,len(route_2),1):
+        if route_1[x] == route_2[y]:
+            intersections.append(route_1[x])
+
+print(intersections)
+
+        
+
     
 # manhattan_equation = abs(origin[0] - endpoint[0]) + abs(origin[1] - endpoint[1])
