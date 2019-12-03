@@ -8,33 +8,37 @@ def OpCodeProgram(x,y,intCode):
     intCode[1] = x
     intCode[2] = y
     for code in range(0, len(intCode),4) :
-        print(intCode)
         code = intCode[startPosition]
         if intCode[0] == 19690720:
-            finalIntCode = list(intCode)
+            return intCode
+            break
         if code == 1:
             factor1Position = intCode[startPosition + 1]
             factor2Position = intCode[startPosition + 2]
             factor3Position = intCode[startPosition + 3]
             intCode[factor3Position] = intCode[factor1Position] + intCode[factor2Position]
+            print(intCode)
+
             startPosition += 4
-        elif code == 2:
+        if code == 2:
             factor1Position = intCode[startPosition + 1]
             factor2Position = intCode[startPosition + 2]
             factor3Position = intCode[startPosition + 3]
             intCode[factor3Position] = intCode[factor1Position] * intCode[factor2Position]
+            print(intCode)
+
             startPosition += 4
-        elif code == 99:
-            startPosition += 1
+        if code == 99:
             break
         else:
             continue
-    return finalIntCode
+
         
-for x in range(0,100,1):
-    for y in range (0,100,1):
-        print(OpCodeProgram(x,y,intCodeOriginal))
-        
+for x in range(100):
+    for y in range (100):
+        finalIntCode = OpCodeProgram(x,y,intCodeOriginal)
+
+print(finalIntCode)
 ##noun = finalIntCode[1]
 ##verb = finalIntCode[2]
 ##product = 1000 * noun + verb

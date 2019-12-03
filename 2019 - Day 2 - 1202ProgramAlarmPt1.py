@@ -5,10 +5,9 @@ intCodeList = [int(x) for x in intCodeList.split(',')]
 def intCodeProgram(intCode):
     intCode[1] = 12
     intCode[2] = 2
-
     startPosition = 0
 
-    for code in range(0, len(intCode),4) :
+    for x in range(0, len(intCode),4) :
         code = intCode[startPosition]
         if code == 1:
             factor1Position = intCode[startPosition + 1]
@@ -16,20 +15,21 @@ def intCodeProgram(intCode):
             factor3Position = intCode[startPosition + 3]
             intCode[factor3Position] = intCode[factor1Position] + intCode[factor2Position]
             startPosition += 4
+            print(intCode)
         if code == 2:
             factor1Position = intCode[startPosition + 1]
             factor2Position = intCode[startPosition + 2]
             factor3Position = intCode[startPosition + 3]
             intCode[factor3Position] = intCode[factor1Position] * intCode[factor2Position]
             startPosition += 4
+            print(intCode)
         if code == 99:
             break
         else:
             continue
     return intCode        
-           
-print(intCodeProgram(intCodeList))
 
+print(intCodeProgram(intCodeList))
 
 
 
