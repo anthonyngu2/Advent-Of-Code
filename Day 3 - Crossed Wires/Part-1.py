@@ -17,7 +17,7 @@ for x in range (0,len(wire_1_route),1):
 
 for x in range (0,len(wire_2_route),1):
     route_2_cords[x][0] = wire_2_route[x][0]
-    route_2_cords[x][1] = int(wire_2_route[x][1:4])
+    route_2_cords[x][1] = int(wire_2_route[x][1:4])        
     
 #determined route of wire from origin
 def plot(route):
@@ -58,14 +58,41 @@ route_1 = plot(route_1_cords)
 route_2 = plot(route_2_cords)
 
 intersections = []
-for x in range(0,len(route_1),1):
-    for y in range(0,len(route_2),1):
-        if route_1[x] == route_2[y]:
-            intersections.append(route_1[x])
-
-print(intersections)
-
+for x in range(1,len(route_1)+1,1):
+    for y in range(1,len(route_2)+1,1):
+        x1 = route_1[x-1][0] #line one x start
+        y1 = route_1[x-1][1] #line one y start
+        x2 = route_1[x][0] #line one x end
+        y2 = route_1[x][1] #line one y end
+        x3 = route_2[y-1][0] #line two x start
+        y3 = route_2[y-1][1] #line two y start
+        x4 = route_2[y][0] #line two x end
+        y4 = route_2[y][1] #line two y end
+        print(x1,x2,y1,y2,x3,x4,y3,y4)
+####        ua_num = (x4-x3)(y1-y3)-(y4-y3)(x1-x3)
+##        ua_den = (y4-y3)(x2-x1)-(x4-x3)(y2-y1)
+##        ub_num = (x2-x1)(y1-y3)-(y2-y1)(x1-x3)
+##        ub_den = ua_dem
+##        if ua_num == ub_num == ua_den == 0: # coincident lines
+##            intersections.append([min(),min()]
+##        if ua_den != 0 and ub_den != 0 :
+##            ua = ua_num / ua_den
+##            ub = ub_num / ub_den
+##        if ua_den == 0 or ub_den == 0 : #parallel lines
+##            break
+##        if ua > 0 and ua < 1: #check first intersection
+##            intersect = calc_intercept(x1,x2,y1,y2,ua)
+##            intersections.append(intersect)
+##        elif ub > 0 and ub < 1: #check second intersection
+##            intersect = calc_intercept(x1,x2,y1,y2,ub)
+##            intersections.append(intersect)
         
+def calc_intercept (x1,x2,y1,y2,ua):
+    x = x1 + ua(x2-x1)
+    y = y1 + ua(y2-y1)
+    return [x,y]
+
+#print(intersections)
 
     
 # manhattan_equation = abs(origin[0] - endpoint[0]) + abs(origin[1] - endpoint[1])
