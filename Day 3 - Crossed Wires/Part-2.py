@@ -91,10 +91,10 @@ def calc_total_points(route):
 complete_route_1 = calc_total_points(route_1)
 complete_route_2 = calc_total_points(route_2)
 
-#set_complete_route_1 = set(tuple(x) for x in complete_route_1)
-#set_complete_route_2 = set(tuple(x) for x in complete_route_2)
-set_complete_route_1 = set(complete_route_1)
-set_complete_route_2 = set(complete_route_2)
+set_complete_route_1 = set(tuple(x) for x in complete_route_1)
+set_complete_route_2 = set(tuple(x) for x in complete_route_2)
+#set_complete_route_1 = set(calc_total_points(route_1))
+#set_complete_route_2 = set(calc_total_points(route_2))
 
 
 
