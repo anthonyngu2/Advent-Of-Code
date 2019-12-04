@@ -100,9 +100,8 @@ complete_route_2 = calc_total_points(route_2)
 complete_route_1 = set(tuple(x) for x in complete_route_1)
 complete_route_2 = set(tuple(x) for x in complete_route_2)
 intersections = [value for value in complete_route_1 if value in complete_route_2]
-print(intersections)
+
 intersections.remove((0,0))
-print(intersections)
        
 origin = [0,0]
 distances = []
