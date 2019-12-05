@@ -15,10 +15,10 @@ def password_checker(password):
             cond = x
             if int(digits[x-1]) > int(digits[x]):
                 return False                
-            if int(digits[x-1]) == int(digits[x]):
-                duplicate += 1
-        if duplicate == 0:
-            return False
+##            if int(digits[x-1]) == int(digits[x]):
+##                duplicate += 1
+##        if duplicate == 0:
+##            return False
         counter = Counter(digits)
         subpass = [digit for digit, count in counter.items() if count == 2]
         if len(subpass) == 0:
