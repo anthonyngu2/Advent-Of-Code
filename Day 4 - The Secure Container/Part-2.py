@@ -23,6 +23,7 @@ def password_checker(password):
         print(digits)
         print(counter.items())
         subpass = [digit for digit, count in counter.items() if count == 2]
+        print(subpass)
         if len(subpass) == 0:
             return False
         return valid
