@@ -24,5 +24,4 @@ for password in range(248345,746315,1):
         potential_passwords.append(password)
 
 print(len(potential_passwords))
-print(potential_passwords)
 

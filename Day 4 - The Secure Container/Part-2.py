@@ -20,10 +20,7 @@ def password_checker(password):
         if duplicate == 0:
             return False
         counter = Counter(digits)
-        print(digits)
-        print(counter.items())
         subpass = [digit for digit, count in counter.items() if count == 2]
-        print(subpass)
         if len(subpass) == 0:
             return False
         return valid
@@ -32,5 +29,5 @@ for password in range(248345,746315,1):
     if password_checker(password):
         potential_passwords.append(password)
 
-#print(len(potential_passwords))
+print(len(potential_passwords))
 
