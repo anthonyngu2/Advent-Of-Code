@@ -22,7 +22,7 @@ def test_diagnostic_program(int_code, system_id):
 
             param_values = []
             for param_position,mode in param_pairs:
-                if opcode == 4 or opcode == 3:
+                if opcode == 3 or opcode == 4:
                     break
                 elif param_position == 3:
                     param_value = int_code[position + param_position]
@@ -34,7 +34,6 @@ def test_diagnostic_program(int_code, system_id):
                     param_value = int_code[position + param_position]
                     param_values.append(param_value)
                     
-            print(mode_opcode)
             if opcode == 1:
                 int_code[param_values[2]] = param_values[0] + param_values[1]
                 test = int_code[param_values[2]]
@@ -46,13 +45,15 @@ def test_diagnostic_program(int_code, system_id):
                 test_results.append(0)
                 position += 4
             elif opcode == 3:
-                input_value = 1
+                input_value = 1 
                 int_code[int_code[position + 1]] = input_value
                 test = input_value
                 test_results.append(0)
                 position += 2
             elif opcode == 4:
-                test_results.append(int_code[position + 1])
+                print(test_results)
+                print(position)
+                test_results.append(int_code[int_code[position + 1]])
                 position += 2
             elif opcode == 99:
                 break
