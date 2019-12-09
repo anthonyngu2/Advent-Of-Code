@@ -1,6 +1,6 @@
 from collections import defaultdict
 #with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 6 - Universal Orbit Map/Orbits.txt') as file:
-with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 6 - Universal Orbit Map/Test.txt') as file:
+with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 6 - Universal Orbit Map/Test1.txt') as file:
     Orbits = file.read().splitlines()
     
 def build_tuple_list(orbits_list):
@@ -32,10 +32,9 @@ def traverse_tree(tree, branch):
     return counter 
 
 indirect = 0
-for parent, children in list(orbit_tree.items()): #maybe remove loop
+for parent, children in list(orbit_tree.items()):
     for child in children:
         indirect += traverse_tree(orbit_tree,child)
     
 print(indirect)
-#direct = len(orbit_tree.keys())
 
