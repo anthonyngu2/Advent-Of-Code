@@ -31,11 +31,11 @@ def traverse_tree(tree, branch):
     print(child)
     for child in tree[branch]:
         counter += traverse_tree(tree, child)
-    return counter
+    return counter 
 
 indirect = 0
-for parent, child in orbit_tree.items():
-    indirect += traverse_tree(orbit_tree,child)
+#for parent, child in orbit_tree.items(): #maybe remove loop
+indirect += traverse_tree(orbit_tree,'COM')
     
 print(indirect)
 #direct = len(orbit_tree.keys())
