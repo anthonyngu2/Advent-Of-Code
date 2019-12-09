@@ -25,18 +25,18 @@ def build_tree(orbit_list):
 orbit_tree = build_tree(orbits_tuple_list)
 print(orbit_tree)
 
-def traverse_tree(branch):
-    counter = 0
-    for child in branch:
-        for grand_child in traverse_tree(orbit_tree[child]):
-        counter += 1
+def traverse_tree(tree, branch):
+    counter = 1
+    child = tree[branch]
+    print(child)
+    for child in tree[branch]:
+        counter += traverse_tree(tree, child)
     return counter
 
 indirect = 0
 for parent, child in orbit_tree.items():
-    indirect += traverse_tree(child)
+    indirect += traverse_tree(orbit_tree,child)
     
-print(counter)
+print(indirect)
 #direct = len(orbit_tree.keys())
-#print(indirect)
-#print(direct)
+
