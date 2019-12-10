@@ -99,11 +99,11 @@ def initiate_thrusters(int_code_list, sequence_output, counter, sequence):
     
 def generate_list():
     integer_list = []
-    for a in range(4:10):
-        for b in range(4:10):
-            for c in range(4:10):
-                for d in range(4:10):
-                    for e in range(4:10):
+    for a in range(5,10):
+        for b in range(5,10):
+            for c in range(5,10):
+                for d in range(5,10):
+                    for e in range(5,10):
                         sequence = [a,b,c,d,e]
                         integer_list.append(sequence)
                         
@@ -124,6 +124,5 @@ def determine_thruster_signal():
         thruster_signals.append(max_thruster_signal)
     return thruster_signals
 
-#print(max(determine_thruster_signal()))
-for i in range(4:10):
-    print i
+print(max(determine_thruster_signal()))
+
