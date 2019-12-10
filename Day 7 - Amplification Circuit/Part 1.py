@@ -83,7 +83,6 @@ def test_diagnostic_program(int_code, sequence_value, output_value):
         else:
             continue
             
-    print(test_results[-1])
     return test_results[-1]
         
 def initiate_thrusters(int_code_list, sequence_output, counter):
