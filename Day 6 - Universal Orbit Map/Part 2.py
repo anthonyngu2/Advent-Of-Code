@@ -33,6 +33,7 @@ def find_all_path(tree, start_node, path=[], total_path=[]):
     else:
         for child in tree[start_node]:
             find_all_path(tree,child,path,total_path)
+        ## removes items from paths list as recursion is finished, so start at child
         path.pop()
     return total_path
 
@@ -50,7 +51,7 @@ def path_finder(paths, endpoint):
 path_to_SAN = path_finder(lists_of_path, 'SAN')
 path_to_YOU = path_finder(lists_of_path, 'YOU')
 
-path_diff = [[node for node in path_to_SAN if node not in path_to_YOU], [node for node in path_to_YOU if node not in path_to_SAN]]
+path_diffs = [[node for node in path_to_SAN if node not in path_to_YOU], [node for node in path_to_YOU if node not in path_to_SAN]]
 nodes_list = [node for sub_path_diff in path_diff for node in sub_path_diff]
 orbital_transfers = len(nodes_list) - 2
 print(orbital_transfers)
