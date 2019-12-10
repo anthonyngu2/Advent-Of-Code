@@ -5,8 +5,9 @@ int_code = [int(x) for x in int_code_list.split(',')]
 def test_diagnostic_program(int_code, sequence_value, output_value):
     position = 0
     test_results = []
+    opcode_three_counter = 0
     while position in range(len(int_code)) :
-
+        
         mode_opcode = str(int_code[position]).zfill(5) #add zeros to full opcode
         mode_opcode_list = list(mode_opcode) #make list
         opcode_modes = [int(x) for x in mode_opcode_list] #convert list strings to ints
@@ -39,13 +40,12 @@ def test_diagnostic_program(int_code, sequence_value, output_value):
             test_results.append(0)
             position += 4
         elif opcode == 3:
-            counter = 0
             input_value_one = sequence_value
             input_value_two = output_value
-            if counter == 0:
+            if opcode_three_counter == 0:
                 int_code[int_code[position + 1]] = input_value_one
-                counter += 1
-            if counter == 1:
+                opcode_three_counter += 1
+            elif opcode_three_counter == 1:
                 int_code[int_code[position + 1]] = output_value
             test_results.append(0)
             position += 2
@@ -86,17 +86,14 @@ def test_diagnostic_program(int_code, sequence_value, output_value):
     print(test_results[-1])
     return test_results[-1]
         
-def initiate_thrusters(int_code_list):
-    output_value = 0
-    def initiate_int_coder(int_code_list, output_value):
-        counter = 1
-        sequence = [4,3,2,1,0]
-        if counter == 5:
-            return sequence_output
-        else:
-            counter += counter
-            sequence_output = test_diagnostic_program(int_code_list, sequence[counter-1], output_value)
-            return initiate_int_coder(int_code_list, sequence_output)
+def initiate_thrusters(int_code_list, sequence_output, counter):
+    sequence = [4,3,2,1,0]
+    if counter == 5:
+        return sequence_output
+    else:
+        counter += 1
+        sequence_output = test_diagnostic_program(int_code_list, sequence[counter-1], sequence_output)
+        return initiate_thrusters(int_code_list, sequence_output, counter)
         
-print(initiate_thrusters(int_code))
+print(initiate_thrusters(int_code, 0, 0))
 
