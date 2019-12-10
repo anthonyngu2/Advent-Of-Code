@@ -89,14 +89,6 @@ def test_diagnostic_program(int_code, sequence_value, output_value):
             
     return test_results[-1]
         
-def initiate_thrusters(int_code_list, sequence_output, counter, sequence):
-    if counter == 5:
-        return sequence_output
-    else:
-        counter += 1
-        sequence_output = test_diagnostic_program(int_code_list, sequence[counter-1], sequence_output)
-        return initiate_thrusters(int_code_list, sequence_output, counter, sequence)
-    
 def generate_list():
     integer_list = []
     for a in range(5):
@@ -116,6 +108,14 @@ def generate_list():
     return total_sequences_lists
 
 sequence_list = generate_list()
+
+def initiate_thrusters(int_code_list, sequence_output, counter, sequence):
+    if counter == 5:
+        return sequence_output
+    else:
+        counter += 1
+        sequence_output = test_diagnostic_program(int_code_list, sequence[counter-1], sequence_output)
+        return initiate_thrusters(int_code_list, sequence_output, counter, sequence)
 
 def determine_thruster_signal():
     thruster_signals = []
