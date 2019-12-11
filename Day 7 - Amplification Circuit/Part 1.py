@@ -124,4 +124,5 @@ def determine_thruster_signal():
         thruster_signals.append(max_thruster_signal)
     return thruster_signals
 
+print(determine_thruster_signal())
 print(max(determine_thruster_signal()))

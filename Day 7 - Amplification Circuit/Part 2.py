@@ -91,8 +91,7 @@ def test_diagnostic_program(sequence_value, output_value):
     log['end position'] = position
     log['int code'] = int_code
     log['test results'] = test_results
-    print(log)
-    return test_results
+    return log
     
 ##def generate_list():
 ##    integer_list = []
@@ -115,13 +114,15 @@ def test_diagnostic_program(sequence_value, output_value):
 ##sequence_list = generate_list()
         
 def initiate_thrusters(sequence_output, counter, sequence):
+    output_log = []
     if counter == 5:
+        print(output_log)
         return sequence_output
-        ##counter = 0
-        ##counter_resets += 1
     else:
         counter += 1
-        sequence_output = test_diagnostic_program(sequence[counter-1], sequence_output)
+        log = test_diagnostic_program(sequence[counter-1], sequence_output)
+        output_log.append(log)
+        sequence_output = log['test results']
         return initiate_thrusters(sequence_output, counter, sequence)
 
 def determine_thruster_signal():
