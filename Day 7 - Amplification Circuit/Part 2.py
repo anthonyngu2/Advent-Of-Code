@@ -158,7 +158,7 @@ def determine_thruster_signal():
     sequence_counter = 0
     first_output = 0
     int_code_original_input = int_code_original
-    sequence = [6, 8, 9, 5, 7] ##should be sequence_list but hitting limit
+    sequence = [6, 8, 5, 9, 7] ##correct sequence, but this line should be sequence_list if it wasn't hitting limit
     max_thruster_signal = initiate_thrusters(int_code_original_input, sequence, sequence_counter, first_output, thruster_signals)
     thruster_signals.append(max_thruster_signal)
     return thruster_signals
