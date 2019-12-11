@@ -1,17 +1,15 @@
 import pprint
 from collections import Counter
 int_code_list = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
-#int_code_list = '3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0'
-#int_code_list = '3,8,1001,8,10,8,105,1,0,0,21,34,51,64,81,102,183,264,345,426,99999,3,9,102,2,9,9,1001,9,4,9,4,9,99,3,9,101,4,9,9,102,5,9,9,1001,9,2,9,4,9,99,3,9,101,3,9,9,1002,9,5,9,4,9,99,3,9,102,3,9,9,101,3,9,9,1002,9,4,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,5,9,101,3,9,9,4,9,99,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,99'
 int_code = [int(x) for x in int_code_list.split(',')]
 
-def test_diagnostic_program(int_code, sequence_value, output_value, final_output_log, log_position):
+def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
     final_log = final_output_log
     sequence = sequence_value
     test_results = 0
     halted = False
     if len(final_log) != 5:
-        int_code = int_code.copy()
+        int_code = int_code_original
         position = 0
         test_results = 0
 
@@ -63,6 +61,9 @@ def test_diagnostic_program(int_code, sequence_value, output_value, final_output
                 opcode_three_counter += 1
             elif opcode_three_counter == 1:
                 int_code[int_code[position + 1]] = output_value
+                opcode_three_counter += 1
+            else:
+                break
             position += 2
             
         elif opcode == 4:
@@ -129,14 +130,15 @@ def test_diagnostic_program(int_code, sequence_value, output_value, final_output
         
 def initiate_thrusters(int_code_original,sequence, sequence_output, counter, final_log):
     if len(final_log) == 5:
-        if final_log[counter-1]['halted']:
+        if final_log[0]['halted'] and final_log[1]['halted'] and final_log[2]['halted'] and final_log[3]['halted'] and final_log[4]['halted']:
             return final_log
     if counter == 5:
-        counter == 0
+        counter = 0
     counter += 1
-
-    log = test_diagnostic_program(int_code, sequence[counter-1], sequence_output, final_log, counter)
+    log = test_diagnostic_program(int_code_original, sequence[counter-1], sequence_output, final_log, counter)
     final_log.append(log)
+    print('------------------------------------------------------------------------')
+    print(final_log)
     sequence_output = final_log[counter-1]['test results']
     return initiate_thrusters(int_code, sequence, sequence_output, counter, final_log)
 
