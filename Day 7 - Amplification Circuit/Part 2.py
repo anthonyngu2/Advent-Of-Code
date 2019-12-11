@@ -1,7 +1,9 @@
 import pprint
 from collections import Counter
+import sys
+sys.setrecursionlimit(10**7)
+int_code_string = '3,8,1001,8,10,8,105,1,0,0,21,34,51,64,81,102,183,264,345,426,99999,3,9,102,2,9,9,1001,9,4,9,4,9,99,3,9,101,4,9,9,102,5,9,9,1001,9,2,9,4,9,99,3,9,101,3,9,9,1002,9,5,9,4,9,99,3,9,102,3,9,9,101,3,9,9,1002,9,4,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,5,9,101,3,9,9,4,9,99,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,99'
 #int_code_string = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
-int_code_string = '3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10'
 int_code_original = [int(x) for x in int_code_string.split(',')]
 
 def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
@@ -21,9 +23,6 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
         position = final_log[log_position-1]['end position']
         test_results = final_log[log_position-1]['test results']
 
-    print(output_value)
-    print(position)
-    print(int_code)
     log_position = log_position - 1
     log = {'sequence': sequence , 'end position': position, 'int code': int_code ,'test results': test_results, 'halted' : halted}
     opcode_three_counter = 0
@@ -69,7 +68,7 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
                 int_code[int_code[position + 1]] = input_value_one
                 opcode_three_counter += 1
             elif opcode_three_counter == 1:
-                int_code[int_code[position + 1]] = output_value
+                int_code[int_code[position + 1]] = input_value_two
                 opcode_three_counter += 1
             else:
                 break
@@ -118,26 +117,26 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
     log['test results'] = test_results
     return log
     
-##def generate_list():
-##    integer_list = []
-##    for a in range(5,10):
-##        for b in range(5,10):
-##            for c in range(5,10):
-##                for d in range(5,10):
-##                    for e in range(5,10):
-##                        sequence = [a,b,c,d,e]
-##                        integer_list.append(sequence)
-##                        
-##    total_sequences_lists = []
-##    for possible_sequence in integer_list:
-##        count = Counter(possible_sequence)
-##        check_empty = [number for number, repeats in count.items() if repeats > 1]
-##        if not check_empty:
-##            total_sequences_lists.append(possible_sequence)
-##    return total_sequences_lists
-##
-##sequence_list = generate_list()
-        
+def generate_list():
+    integer_list = []
+    for a in range(5,10):
+        for b in range(5,10):
+            for c in range(5,10):
+                for d in range(5,10):
+                    for e in range(5,10):
+                        sequence = [a,b,c,d,e]
+                        integer_list.append(sequence)
+                        
+    total_sequences_lists = []
+    for possible_sequence in integer_list:
+        count = Counter(possible_sequence)
+        check_empty = [number for number, repeats in count.items() if repeats > 1]
+        if not check_empty:
+            total_sequences_lists.append(possible_sequence)
+    return total_sequences_lists
+
+sequence_list = generate_list()
+
 def initiate_thrusters(int_code_original,sequence, sequence_output, sequence_position, final_log):
     if len(final_log) == 5:
         if final_log[4]['halted']:
@@ -146,7 +145,6 @@ def initiate_thrusters(int_code_original,sequence, sequence_output, sequence_pos
         sequence_position = 0
     sequence_position += 1
     log = test_diagnostic_program(int_code_original, sequence[sequence_position-1], sequence_output, final_log, sequence_position)
-    print(log)
     if len(final_log) == 5: 
         final_log[sequence_position-1] = log
     else:
@@ -157,18 +155,16 @@ def initiate_thrusters(int_code_original,sequence, sequence_output, sequence_pos
 
 def determine_thruster_signal():
     thruster_signals = []
-    sequence = [9,7,8,5,6]
     sequence_counter = 0
     first_output = 0
     int_code_original_input = int_code_original
-    #for sequence in sequence_list:
+    sequence = [6, 8, 9, 5, 7] ##should be sequence_list but hitting limit
     max_thruster_signal = initiate_thrusters(int_code_original_input, sequence, sequence_counter, first_output, thruster_signals)
     thruster_signals.append(max_thruster_signal)
-    thruster_signals.pop(-1)
     return thruster_signals
 
-
-print(determine_thruster_signal()[-1]['test results'])
-#print(determine_thruster_signal())
-
-
+print(determine_thruster_signal()[4]['test results'])
+#list_of_thrusters = []
+#list_of_outputs = determine_thruster_signal()
+#for logs in list_of_outputs:
+#    list_of_thrusters.append(logs['test results'])
