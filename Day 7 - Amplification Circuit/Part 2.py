@@ -113,23 +113,23 @@ def test_diagnostic_program(sequence_value, output_value):
 
 ##sequence_list = generate_list()
         
-def initiate_thrusters(sequence_output, counter, sequence):
-    output_log = []
+def initiate_thrusters(sequence, sequence_output, counter, output_log):
     if counter == 5:
-        print(output_log)
         return sequence_output
     else:
         counter += 1
         log = test_diagnostic_program(sequence[counter-1], sequence_output)
         output_log.append(log)
         sequence_output = log['test results']
-        return initiate_thrusters(sequence_output, counter, sequence)
+        return initiate_thrusters(sequence, sequence_output, counter, output_log)
 
 def determine_thruster_signal():
     thruster_signals = []
+    final_output_log = []
     sequence = [1,0,4,3,2]
+    
     #for sequence in sequence_list:
-    max_thruster_signal = initiate_thrusters(0, 0, sequence)
+    max_thruster_signal = initiate_thrusters(sequence, 0, 0, final_output_log)
     thruster_signals.append(max_thruster_signal)
     return thruster_signals
 
