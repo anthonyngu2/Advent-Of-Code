@@ -1,11 +1,12 @@
 import pprint
 from collections import Counter
-int_code_string = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
+#int_code_string = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
+int_code_string = '3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10'
 int_code_original = [int(x) for x in int_code_string.split(',')]
 
 def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
+    second_loop = 0
     final_log = final_output_log
-    print(len(final_log))
     sequence = sequence_value
     test_results = 0
     halted = False
@@ -13,12 +14,16 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
         int_code = int_code_original.copy()
         position = 0
         test_results = 0
+        second_loop = 0
     else:
+        second_loop = 1
         int_code = final_log[log_position-1]['int code']
         position = final_log[log_position-1]['end position']
         test_results = final_log[log_position-1]['test results']
 
-        
+    print(output_value)
+    print(position)
+    print(int_code)
     log_position = log_position - 1
     log = {'sequence': sequence , 'end position': position, 'int code': int_code ,'test results': test_results, 'halted' : halted}
     opcode_three_counter = 0
@@ -54,8 +59,12 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
             position += 4
             
         elif opcode == 3:
-            input_value_one = sequence_value
-            input_value_two = int(output_value)
+            if second_loop == 0:
+                input_value_one = sequence_value
+                input_value_two = int(output_value)
+            else:
+                input_value_one = int(output_value)
+                
             if opcode_three_counter == 0:
                 int_code[int_code[position + 1]] = input_value_one
                 opcode_three_counter += 1
@@ -69,6 +78,7 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
         elif opcode == 4:
             test_results = int_code[int_code[position + 1]]
             position += 2
+            break
             
         elif opcode == 5:
             if param_values[0] != 0:
@@ -128,28 +138,26 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
 ##
 ##sequence_list = generate_list()
         
-def initiate_thrusters(int_code_original,sequence, sequence_output, counter, final_log):
+def initiate_thrusters(int_code_original,sequence, sequence_output, sequence_position, final_log):
     if len(final_log) == 5:
         if final_log[4]['halted']:
             return final_log
-    if counter == 5:
-        counter = 0
-    counter += 1
-    log = test_diagnostic_program(int_code_original, sequence[counter-1], sequence_output, final_log, counter)
-    print('-------------------------------------------------------------------')
-    print(final_log)
-
+    if sequence_position == 5:
+        sequence_position = 0
+    sequence_position += 1
+    log = test_diagnostic_program(int_code_original, sequence[sequence_position-1], sequence_output, final_log, sequence_position)
+    print(log)
     if len(final_log) == 5: 
-        final_log[counter-1] = log
+        final_log[sequence_position-1] = log
     else:
         final_log.append(log)
         
-    sequence_output = final_log[counter-1]['test results']
-    return initiate_thrusters(int_code_original, sequence, sequence_output, counter, final_log)
+    sequence_output = final_log[sequence_position-1]['test results']
+    return initiate_thrusters(int_code_original, sequence, sequence_output, sequence_position, final_log)
 
 def determine_thruster_signal():
     thruster_signals = []
-    sequence = [9,8,7,6,5]
+    sequence = [9,7,8,5,6]
     sequence_counter = 0
     first_output = 0
     int_code_original_input = int_code_original
