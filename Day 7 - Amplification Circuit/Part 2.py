@@ -1,22 +1,22 @@
 import pprint
 from collections import Counter
-int_code_list = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
-int_code = [int(x) for x in int_code_list.split(',')]
+int_code_string = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
+int_code_original = [int(x) for x in int_code_string.split(',')]
 
 def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
     final_log = final_output_log
+    print(len(final_log))
     sequence = sequence_value
     test_results = 0
     halted = False
     if len(final_log) != 5:
-        int_code = int_code_original
+        int_code = int_code_original.copy()
         position = 0
         test_results = 0
-
     else:
-        int_code = final_log[counter-1]['int code']
-        position = final_log[counter-1]['end position']
-        test_results = final_log[counter-1]['test results']
+        int_code = final_log[log_position-1]['int code']
+        position = final_log[log_position-1]['end position']
+        test_results = final_log[log_position-1]['test results']
 
         
     log_position = log_position - 1
@@ -130,23 +130,31 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
         
 def initiate_thrusters(int_code_original,sequence, sequence_output, counter, final_log):
     if len(final_log) == 5:
-        if final_log[0]['halted'] and final_log[1]['halted'] and final_log[2]['halted'] and final_log[3]['halted'] and final_log[4]['halted']:
+        if final_log[4]['halted']:
             return final_log
     if counter == 5:
         counter = 0
     counter += 1
     log = test_diagnostic_program(int_code_original, sequence[counter-1], sequence_output, final_log, counter)
-    final_log.append(log)
-    print('------------------------------------------------------------------------')
+    print('-------------------------------------------------------------------')
     print(final_log)
+
+    if len(final_log) == 5: 
+        final_log[counter-1] = log
+    else:
+        final_log.append(log)
+        
     sequence_output = final_log[counter-1]['test results']
-    return initiate_thrusters(int_code, sequence, sequence_output, counter, final_log)
+    return initiate_thrusters(int_code_original, sequence, sequence_output, counter, final_log)
 
 def determine_thruster_signal():
     thruster_signals = []
     sequence = [9,8,7,6,5]
+    sequence_counter = 0
+    first_output = 0
+    int_code_original_input = int_code_original
     #for sequence in sequence_list:
-    max_thruster_signal = initiate_thrusters(int_code, sequence, 0, 0, thruster_signals)
+    max_thruster_signal = initiate_thrusters(int_code_original_input, sequence, sequence_counter, first_output, thruster_signals)
     thruster_signals.append(max_thruster_signal)
     thruster_signals.pop(-1)
     return thruster_signals
