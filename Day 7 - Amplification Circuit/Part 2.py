@@ -1,12 +1,18 @@
 import pprint
 from collections import Counter
-#int_code_list = '27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
-int_code_list = '3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0'
+int_code_list = '3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5'
+#int_code_list = '3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0'
 #int_code_list = '3,8,1001,8,10,8,105,1,0,0,21,34,51,64,81,102,183,264,345,426,99999,3,9,102,2,9,9,1001,9,4,9,4,9,99,3,9,101,4,9,9,102,5,9,9,1001,9,2,9,4,9,99,3,9,101,3,9,9,1002,9,5,9,4,9,99,3,9,102,3,9,9,101,3,9,9,1002,9,4,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,5,9,101,3,9,9,4,9,99,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,99'
+int_code = [int(x) for x in int_code_list.split(',')]
 
-def test_diagnostic_program(sequence_value, output_value, final_output_log):
+def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
     final_log = final_output_log
-    int_code = [int(x) for x in int_code_list.split(',')]
+    if len(final_log) != 4:
+        int_code = int_code_original
+    else:
+        int_code = final_log[log_position-1]['int_code']
+
+    log_position = log_position - 1
     sequence = sequence_value
     test_results = 0
     position = 0
@@ -92,6 +98,7 @@ def test_diagnostic_program(sequence_value, output_value, final_output_log):
     log['end position'] = position
     log['int code'] = int_code
     log['test results'] = test_results
+    print(log)
     return log
     
 ##def generate_list():
@@ -111,24 +118,26 @@ def test_diagnostic_program(sequence_value, output_value, final_output_log):
 ##        if not check_empty:
 ##            total_sequences_lists.append(possible_sequence)
 ##    return total_sequences_lists
-
+##
 ##sequence_list = generate_list()
         
-def initiate_thrusters(sequence, sequence_output, counter, final_log):
+def initiate_thrusters(int_code,sequence, sequence_output, counter, final_log):
+    if len(final_log) != 5:
+            int_code_original = int_code.copy()
     if counter == 5:
-        return final_log[counter-1]
+        counter == 0
     else:
         counter += 1
-        log = test_diagnostic_program(sequence[counter-1], sequence_output, final_log)
+        log = test_diagnostic_program(int_code_original, sequence[counter-1], sequence_output, final_log, counter)
         final_log.append(log)
-        sequence_output = log['test results']
-        return initiate_thrusters(sequence, sequence_output, counter, final_log)
+        sequence_output = final_log[counter-1]['test results']
+        return initiate_thrusters(int_code, sequence, sequence_output, counter, final_log)
 
 def determine_thruster_signal():
     thruster_signals = []
-    sequence = [1,0,4,3,2]
+    sequence = [9,8,7,6,5]
     #for sequence in sequence_list:
-    max_thruster_signal = initiate_thrusters(sequence, 0, 0, thruster_signals)
+    max_thruster_signal = initiate_thrusters(int_code, sequence, 0, 0, thruster_signals)
     thruster_signals.append(max_thruster_signal)
     return thruster_signals
 
