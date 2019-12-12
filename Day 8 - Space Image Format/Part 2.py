@@ -2,6 +2,7 @@ import math
 with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 8 - Space Image Format/Input.txt') as file:
     Image = file.read()
 
+#splits the whole string into a list of lists, each element is layer
 def create_layers(file, width, height):
     layer_size = width * height
     layers  = []
@@ -21,7 +22,21 @@ def create_layers(file, width, height):
 Width = 25
 Height = 6
 file_layers = create_layers(Image, Width, Height)
-print(file_layers)
+
+#regroups each layers rows together
+def create_row_groups(layers, height):
+    image_by_row = [[]]
+    for layer in layers:
+        for row in range(height):
+            image_by_row[row].append(layer[row])
+
+    return image_by_row
+
+rows_by_layers = create_row_groups(file_layers, Height)
+hex_black = '#000000'
+hex_white = '#FFFFFF'
+hex_transparent = '#ffffff00'
+
 ##def layer_counter(number_of_layer, layer):
 ##    zero_count = 0
 ##    one_count = 0
