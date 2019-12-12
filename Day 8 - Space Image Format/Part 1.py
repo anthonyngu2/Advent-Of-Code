@@ -17,7 +17,7 @@ Width = 25
 Height = 6
 file_layers = create_sub_list(Image, Width, Height)
 
-def decoder(number_of_layer, layer):
+def layer_counter(number_of_layer, layer):
     zero_count = 0
     one_count = 0
     two_count = 0
@@ -41,12 +41,12 @@ def decoder(number_of_layer, layer):
 def generate_log(files):
     full_log = []
     for layer_number, layer in enumerate(files):
-        layer_log = decoder(layer_number, layer)
+        layer_log = layer_counter(layer_number, layer)
         full_log.append(layer_log)
     return full_log
 
 complete_logs = generate_log(file_layers)
 del complete_logs[-1]
 
-min_zero = min(complete_logs, key=lambda x:x['zero count'])
+min_zero = min(complete_logs, key=lambda x:x['zero count']) #key=lambda allows for anonymous functions inline
 print(min_zero)
