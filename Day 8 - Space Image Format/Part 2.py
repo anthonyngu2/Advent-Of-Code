@@ -2,37 +2,36 @@ import math
 with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 8 - Space Image Format/Input.txt') as file:
     Image = file.read()
 
-#splits the whole string into a list of lists, each element is layer
-def create_layers(file, width, height):
+#splits the whole string into a list of lists, each row and layer grouped together
+def create_row_layers(file, width, height):
     layer_size = width * height
-    layers  = []
-    layer = []
+    layers_by_row  = [[] for i in range(height)]
+    row = []
+    start = 0
+    end = 0
     
-    for start in range(0, len(file), layer_size):
-        end = start + layer_size
-        row = file[start:end]
-        layer.append(row)
-        if len(layer) == height:
-            copy = layer.copy()
-            layers.append(copy)
-            layer = []
-    return layers
+    while end < len(file):
+        for row_number in range(height):
+            end = start + width
+            layer_row = file[start:end]
+            layers_by_row[row_number].append(layer_row)
+            start += width
+
+    return layers_by_row
         
     
 Width = 25
 Height = 6
-file_layers = create_layers(Image, Width, Height)
+file_layers = create_row_layers(Image, Width, Height)
+print(len(file_layers))
+print(len(file_layers[0]))
+print(len(file_layers[1]))
+print(len(file_layers[2]))
+print(len(file_layers[3]))
+print(len(file_layers[4]))
+print(len(file_layers[5]))
 
-#regroups each layers rows together
-def create_row_groups(layers, height):
-    image_by_row = [[]]
-    for layer in layers:
-        for row in range(height):
-            image_by_row[row].append(layer[row])
 
-    return image_by_row
-
-rows_by_layers = create_row_groups(file_layers, Height)
 hex_black = '#000000'
 hex_white = '#FFFFFF'
 hex_transparent = '#ffffff00'
