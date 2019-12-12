@@ -31,7 +31,8 @@ def layer_counter(number_of_layer, layer):
         if digit == '2':
             two_count += 1
         if digit_position == len(layer) - 1:
-            log['layer %s' % number_of_layer] =  number_of_layer 
+            number_of_layer = number_of_layer + 1
+            log['layer %s' % number_of_layer] =  number_of_layer
             log['zero count'] = zero_count
             log['one count'] = one_count
             log['two count'] = two_count
@@ -47,6 +48,7 @@ def generate_log(files):
 
 complete_logs = generate_log(file_layers)
 del complete_logs[-1]
+print(complete_logs)
 
 min_zero = min(complete_logs, key=lambda x:x['zero count']) #key=lambda allows for anonymous functions inline
 print(min_zero)
