@@ -14,24 +14,24 @@ def create_row_layers(file, width, height):
         for row_number in range(height):
             end = start + width
             layer_row = file[start:end]
-            layers_by_row[row_number].append(layer_row)
+            layers_by_row[row_number].append(list(layer_row))
             start += width
 
     return layers_by_row
         
-    
 Width = 25
 Height = 6
 file_layers = create_row_layers(Image, Width, Height)
-print(len(file_layers))
-print(len(file_layers[0]))
-print(len(file_layers[1]))
-print(len(file_layers[2]))
-print(len(file_layers[3]))
-print(len(file_layers[4]))
-print(len(file_layers[5]))
-
-
+print(file_layers)
+##
+##def generate_file_image(row_layers):
+##    full_image_pixels
+##    for row_number, row in enumerate(row_layers):
+##        row.pop()
+##        for layer in row:
+##            if
+##            
+generate_file_image(file_layers)
 hex_black = '#000000'
 hex_white = '#FFFFFF'
 hex_transparent = '#ffffff00'
