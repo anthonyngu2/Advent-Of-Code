@@ -1,11 +1,13 @@
 import math
 from PIL import Image
 import numpy as np
+
 with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 8 - Space Image Format/Input.txt') as file:
     read_file = file.read()
 
 Width = 25
 Height = 6
+
 #splits the whole string into a list of lists, each row and layer grouped together
 def create_row_layers(file, width, height):
     layer_size = width * height
