@@ -28,7 +28,7 @@ def create_row_layers(file, width, height):
 file_layers = create_row_layers(read_file, Width, Height)
 def decoder(row):
     full_row = []
-    for position in range(25):
+    for position in range(Width):
         for layer_number, layer in enumerate(row):
             if layer[position] == '2': #transparent
                 continue
