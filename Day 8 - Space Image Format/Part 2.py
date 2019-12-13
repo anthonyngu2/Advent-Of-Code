@@ -1,7 +1,11 @@
 import math
+from PIL import Image
+import numpy as np
 with open ('/Users/anthonynguyen/Desktop/Advent-Of-Code-2019/Day 8 - Space Image Format/Input.txt') as file:
-    Image = file.read()
+    read_file = file.read()
 
+Width = 25
+Height = 6
 #splits the whole string into a list of lists, each row and layer grouped together
 def create_row_layers(file, width, height):
     layer_size = width * height
@@ -14,60 +18,37 @@ def create_row_layers(file, width, height):
         for row_number in range(height):
             end = start + width
             layer_row = file[start:end]
-            layers_by_row[row_number].append(list(layer_row))
+            layers_by_row[row_number].append(layer_row)
             start += width
 
     return layers_by_row
         
-Width = 25
-Height = 6
-file_layers = create_row_layers(Image, Width, Height)
-print(file_layers)
-##
-##def generate_file_image(row_layers):
-##    full_image_pixels
-##    for row_number, row in enumerate(row_layers):
-##        row.pop()
-##        for layer in row:
-##            if
-##            
-generate_file_image(file_layers)
-hex_black = '#000000'
-hex_white = '#FFFFFF'
-hex_transparent = '#ffffff00'
+file_layers = create_row_layers(read_file, Width, Height)
+def decoder(row):
+    full_row = []
+    for position in range(25):
+        for layer_number, layer in enumerate(row):
+            if layer[position] == '2': #transparent
+                continue
+            elif layer[position] == '1': #white
+                full_row.append((255,255,255))
+                break
+            elif layer[position] == '0': #black
+                full_row.append((0,0,0))
+                break
+    return full_row
+            
+def generate_file_image(row_layers):
+    full_image_pixels = []
+    for row in row_layers:
+        row.pop()
+        corrected_row = decoder(row)
+        full_image_pixels.append(corrected_row)
+        
+    return full_image_pixels
 
-##def layer_counter(number_of_layer, layer):
-##    zero_count = 0
-##    one_count = 0
-##    two_count = 0
-##    log = {}
-##
-##    for digit_position, digit in enumerate(layer):
-##        if digit == '0':
-##            zero_count += 1
-##        if digit == '1':
-##            one_count += 1
-##        if digit == '2':
-##            two_count += 1
-##        if digit_position == len(layer) - 1:
-##            number_of_layer = number_of_layer + 1
-##            log['layer %s' % number_of_layer] =  number_of_layer
-##            log['zero count'] = zero_count
-##            log['one count'] = one_count
-##            log['two count'] = two_count
-##    
-##    return log            
-##
-##def generate_log(files):
-##    full_log = []
-##    for layer_number, layer in enumerate(files):
-##        layer_log = layer_counter(layer_number, layer)
-##        full_log.append(layer_log)
-##    return full_log
-##
-##complete_logs = generate_log(file_layers)
-##del complete_logs[-1]
-##print(complete_logs)
-##
-##min_zero = min(complete_logs, key=lambda x:x['zero count']) #key=lambda allows for anonymous functions inline
-##print(min_zero)
+image = generate_file_image(file_layers)
+
+array = np.array(image, dtype=np.uint8)
+new_image = Image.fromarray(array)
+new_image.save('DecodedImage.png')
