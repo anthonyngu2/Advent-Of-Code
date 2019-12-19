@@ -1,8 +1,4 @@
-import pprint
-from collections import Counter
-import sys
-
-int_code_original = [int(x) for x in int_code_string.split(',')]
+int_code_list = [int(x) for x in int_code_list.split(',')]
 
 def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
     second_loop = 0
@@ -125,55 +121,8 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
     log['int code'] = int_code
     log['test results'] = test_results
     return log
-    
-def generate_list():
-    integer_list = []
-    for a in range(5,10):
-        for b in range(5,10):
-            for c in range(5,10):
-                for d in range(5,10):
-                    for e in range(5,10):
-                        sequence = [a,b,c,d,e]
-                        integer_list.append(sequence)
-                        
-    total_sequences_lists = []
-    for possible_sequence in integer_list:
-        count = Counter(possible_sequence)
-        check_empty = [number for number, repeats in count.items() if repeats > 1]
-        if not check_empty:
-            total_sequences_lists.append(possible_sequence)
-    return total_sequences_lists
-
-sequence_list = generate_list()
-
-def initiate_thrusters(int_code_original,sequence, sequence_output, sequence_position, final_log):
-    if len(final_log) == 5:
-        if final_log[4]['halted']:
-            return final_log
-    if sequence_position == 5:
-        sequence_position = 0
-    sequence_position += 1
-    log = test_diagnostic_program(int_code_original, sequence[sequence_position-1], sequence_output, final_log, sequence_position)
-    if len(final_log) == 5: 
-        final_log[sequence_position-1] = log
-    else:
-        final_log.append(log)
         
-    sequence_output = final_log[sequence_position-1]['test results']
-    return initiate_thrusters(int_code_original, sequence, sequence_output, sequence_position, final_log)
+#system_id = input() -> store as 1 for now
+output = test_diagnostic_program(int_code_list,'1')
+print(output)
 
-def determine_thruster_signal():
-    thruster_signals = []
-    sequence_counter = 0
-    first_output = 0
-    int_code_original_input = int_code_original
-    sequence = [6, 8, 5, 9, 7] ##correct sequence, but this line should be sequence_list if it wasn't hitting limit
-    max_thruster_signal = initiate_thrusters(int_code_original_input, sequence, sequence_counter, first_output, thruster_signals)
-    thruster_signals.append(max_thruster_signal)
-    return thruster_signals
-
-print(determine_thruster_signal()[4]['test results'])
-#list_of_thrusters = []
-#list_of_outputs = determine_thruster_signal()
-#for logs in list_of_outputs:
-#    list_of_thrusters.append(logs['test results'])
