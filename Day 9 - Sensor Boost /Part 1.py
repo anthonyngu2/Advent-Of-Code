@@ -1,5 +1,6 @@
 #int_code_list = '109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99'
-int_code_list = '104,1125899906842624,99'
+int_code_list = '1102,34915192,34915192,7,4,7,99,0'
+#int_code_list = '104,1125899906842624,99'
 int_code_list = [int(x) for x in int_code_list.split(',')]
 
 
@@ -23,8 +24,17 @@ def test_diagnostic_program(int_code, input_value):
         param_values = []
 
         for param_position, mode in param_pairs:
-            if opcode in (3, 4, 9, 99):
+            if opcode in (3, 9, 99):
                 break
+            if opcode == 4 and param_position == 1:
+                if mode == 0:
+                    param_value = int_code[int_code[position + param_position]]
+                    param_values.append(param_value)
+                    break
+                if mode == 1 and param_position == 1:
+                    param_value = int_code[position + param_position]
+                    param_values.append(param_value)
+                    break
             if param_position == 3:
                 param_value = int_code[position + param_position]
                 param_values.append(param_value)
@@ -57,7 +67,7 @@ def test_diagnostic_program(int_code, input_value):
             position += 2
 
         elif opcode == 4:
-            test_results = int_code[position + 1] # removed outer int_code[] but may need to add back in
+            test_results = param_values[0] 
             position += 2
 
         elif opcode == 5:
