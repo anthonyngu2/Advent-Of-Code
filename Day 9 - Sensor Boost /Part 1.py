@@ -1,24 +1,13 @@
+int_code_list = '109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99'
 int_code_list = [int(x) for x in int_code_list.split(',')]
 
-def test_diagnostic_program(int_code_original, sequence_value, output_value, final_output_log, log_position):
-    second_loop = 0
-    final_log = final_output_log
-    sequence = sequence_value
+def test_diagnostic_program(int_code_original, input_value):
     test_results = 0
+    relative_base = 0
     halted = False
-    if len(final_log) != 5:
-        int_code = int_code_original.copy()
-        position = 0
-        test_results = 0
-        second_loop = 0
-    else:
-        second_loop = 1
-        int_code = final_log[log_position-1]['int code']
-        position = final_log[log_position-1]['end position']
-        test_results = final_log[log_position-1]['test results']
+    position = 0
 
-    log_position = log_position - 1
-    log = {'sequence': sequence , 'end position': position, 'int code': int_code ,'test results': test_results, 'halted' : halted}
+    log = {'int code': int_code ,'test results': test_results,}
     opcode_three_counter = 0
     while position in range(len(int_code)) :
         
@@ -30,7 +19,6 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
         params_mode = opcode_modes[:3]
         param_pairs = list(enumerate(params_mode[::-1], start=1))
         param_values = []
-        relative_base = 0
 
         
         for param_position,mode in param_pairs:
@@ -44,14 +32,15 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
                 param_value = int_code[position + param_position]
                 param_values.append(param_value)
             elif mode == 2: #relative mode
-                if relative_base == 0 and param_position == 0:
+                if relative_base == 0:
                     param_value = int_code[int_code[position + param_position]]
                     param_values.append(param_value)
-                elif relative_base != 0 and param_position == 0:
+                elif relative_base != 0:
                     param_value = int_code[relative_base + int_code[position + param_position]]
                     param_values.append(param_value)
                 else:
                     break
+
         if opcode == 1:
             int_code[param_values[2]] = param_values[0] + param_values[1]
             position += 4
@@ -61,26 +50,12 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
             position += 4
             
         elif opcode == 3:
-            if second_loop == 0:
-                input_value_one = sequence_value
-                input_value_two = int(output_value)
-            else:
-                input_value_one = int(output_value)
-                
-            if opcode_three_counter == 0:
-                int_code[int_code[position + 1]] = input_value_one
-                opcode_three_counter += 1
-            elif opcode_three_counter == 1:
-                int_code[int_code[position + 1]] = input_value_two
-                opcode_three_counter += 1
-            else:
-                break
+            int_code[int_code[position + 1]] = input_value
             position += 2
             
         elif opcode == 4:
             test_results = param_value[0]
             position += 2
-            break
             
         elif opcode == 5:
             if param_values[0] != 0:
@@ -107,6 +82,7 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
                 int_code[param_values[2]] = 1
             else:
                 int_code[param_values[2]] = 0
+
         elif opcode == 9:
             position += 2
             relative_base = relative_base + param_values[0]
@@ -122,7 +98,6 @@ def test_diagnostic_program(int_code_original, sequence_value, output_value, fin
     log['test results'] = test_results
     return log
         
-#system_id = input() -> store as 1 for now
-output = test_diagnostic_program(int_code_list,'1')
-print(output)
+output = test_diagnostic_program(int_code_list,0)
+print(output['test results'])
 
